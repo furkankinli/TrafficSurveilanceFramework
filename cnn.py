@@ -183,7 +183,7 @@ def train(f_maps, conv_stride, maxp_stride, training_epochs=training_epochs):
 
 
 def main():
-    train(64, [3, 3], [2, 2])
+    train(64, [5, 5], [2, 2])
 
 if __name__ == '__main__':
     main()
