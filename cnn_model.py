@@ -17,14 +17,10 @@ def CNN(inputs, feature_maps, conv_stride, maxp_stride, is_training=True, x_size
         # For slim API, by default the activation function is rectified linear unit "activation_fn=nn.relu"
 
         net = slim.conv2d(x, feature_maps, conv_stride, scope='conv1-1')
-        net = slim.conv2d(net, feature_maps, conv_stride, scope='conv1-2')
         net = slim.max_pool2d(net, maxp_stride, scope='pool1')
         net = slim.conv2d(net, 2 * feature_maps, conv_stride, scope='conv2-1')
-        net = slim.conv2d(net, 2 * feature_maps, conv_stride, scope='conv2-2')
         net = slim.max_pool2d(net, maxp_stride, scope='pool2')
         net = slim.conv2d(net, 2 * 2 * feature_maps, conv_stride, scope='conv3-1')
-        net = slim.conv2d(net, 2 * 2 * feature_maps, conv_stride, scope='conv3-2')
-        net = slim.conv2d(net, 2 * 2 * feature_maps, conv_stride, scope='conv3-3')
         net = slim.max_pool2d(net, maxp_stride, scope='pool3')
         net = slim.flatten(net, scope='flatten1')
         net = slim.fully_connected(net, 4096, scope='fc1')
