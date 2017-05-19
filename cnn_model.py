@@ -26,12 +26,9 @@ def CNN(inputs, feature_maps, conv_stride, maxp_stride, is_training=True, x_size
         net = slim.conv2d(net, 2 * 2 * feature_maps, conv_stride, scope='conv3-2')
         net = slim.conv2d(net, 2 * 2 * feature_maps, conv_stride, scope='conv3-3')
         net = slim.max_pool2d(net, maxp_stride, scope='pool3')
-        net = slim.conv2d(net, 2 * 2 * 2 * feature_maps, conv_stride, scope='conv4-1')
-        net = slim.conv2d(net, 2 * 2 * 2 * feature_maps, conv_stride, scope='conv4-2')
-        net = slim.conv2d(net, 2 * 2 * 2 * feature_maps, conv_stride, scope='conv4-3')
-        net = slim.max_pool2d(net, maxp_stride, scope='pool4')
         net = slim.flatten(net, scope='flatten1')
         net = slim.fully_connected(net, 4096, scope='fc1')
+        net = slim.dropout(net, is_training=is_training, scope='dropout1')
         net = slim.fully_connected(net, 1024, scope='fc2')
         net = slim.dropout(net, is_training=is_training, scope='dropout1')  # 0.5 by default
         outputs = slim.fully_connected(net, 8, activation_fn=None, normalizer_fn=None, scope='fco')
