@@ -67,17 +67,17 @@ def apply_contrast(data, label):
     return new_data, new_label
 
 
-def vertical_flip_image(image):
+def horizontal_flip_image(image):
     img = cv2.flip(image, 1)
 
     return img
 
 
-def apply_vertical_flip(data, label):
+def apply_horizontal_flip(data, label):
     new_data = []
     new_label = []
     for i in range(len(data)):
-        new_data.append(vertical_flip_image(data[i]))
+        new_data.append(horizontal_flip_image(data[i]))
         new_label.append(label[i])
 
     return new_data, new_label
