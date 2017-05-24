@@ -5,6 +5,7 @@ import tensorflow.contrib.slim as slim
 from sklearn.model_selection import train_test_split
 
 import os
+from datetime import datetime
 import cv2
 import cnn_model
 import data_manipulation
@@ -13,10 +14,10 @@ MODEL_DIRECTORY = "model/model.ckpt"
 LOGS_DIRECTORY = "logs/train"
 
 # Parameters
-training_epochs = 100
-TRAIN_BATCH_SIZE = 100
+training_epochs = 50
+TRAIN_BATCH_SIZE = 128
 display_step = 100
-TEST_BATCH_SIZE = 100
+TEST_BATCH_SIZE = 128
 
 
 def read_data():
@@ -41,13 +42,13 @@ def read_labels():
 
 
 def split_dataset(X, y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
     return X_train, X_test, y_train, y_test
 
 
-def train(f_maps, conv_stride, maxp_stride, training_epochs=training_epochs):
+def train(f_maps, conv_stride, maxp_stride, training_epochs):
     batch_size = TRAIN_BATCH_SIZE
-    num_labels = 8
+    num_labels = 5
 
     data = read_data()
     labels = read_labels()
@@ -71,7 +72,7 @@ def train(f_maps, conv_stride, maxp_stride, training_epochs=training_epochs):
     print('Shape of shifted data: %s' % str(shifted_data.shape))
 
     print('Applying flipping manipulation...')
-    flipped_data, flipped_labels = data_manipulation.apply_vertical_flip(contrasted_data, labels)
+    flipped_data, flipped_labels = data_manipulation.apply_horizontal_flip(contrasted_data, labels)
     flipped_data = np.asarray(flipped_data)
     print('Size of flipped data: %d' % len(flipped_data))
     print('Shape of flipped data: %s' % str(flipped_data.shape))
@@ -106,7 +107,7 @@ def train(f_maps, conv_stride, maxp_stride, training_epochs=training_epochs):
 
     # Tensorflow variables should be initialized.
     x = tf.placeholder(tf.float32, [None, 4800])
-    y_ = tf.placeholder(tf.float32, [None, 8])
+    y_ = tf.placeholder(tf.float32, [None, 5])
 
     y = cnn_model.CNN(x, feature_maps=f_maps, conv_stride=conv_stride, maxp_stride=maxp_stride)
 
@@ -157,8 +158,8 @@ def train(f_maps, conv_stride, maxp_stride, training_epochs=training_epochs):
             summary_writer.add_summary(summary, epoch * total_batch + i)
 
             if i % display_step == 0:
-                print("Epoch:", '%04d,' % (epoch + 1),
-                      "batch_index %4d/%4d, Training accuracy: %.5f" % (i, total_batch, train_accuracy))
+                format_str = '%s: step %d, accuracy = %.3f'
+                print(format_str % (datetime.now(), (epoch+1), train_accuracy))
 
     saver.save(sess, MODEL_DIRECTORY)
 
@@ -183,7 +184,7 @@ def train(f_maps, conv_stride, maxp_stride, training_epochs=training_epochs):
 
 
 def main():
-    train(64, [5, 5], [2, 2])
+    train(64, [5, 5], [2, 2], training_epochs)
 
 if __name__ == '__main__':
     main()
