@@ -16,7 +16,7 @@ def knn_classifier(x_train, y_train, x_test):
 
 
 def svm_classifier(x_train, y_train, x_test):
-    clf = svm.SVC(kernel='poly', degree=4, C=1, gamma=0.01)
+    clf = svm.SVC(kernel='poly', degree=4, C=1, gamma=0.001)
     clf.fit(x_train, y_train)
     labels = clf.predict(x_test)
 
@@ -50,32 +50,8 @@ def random_forest_classifier(x_train, y_train, x_test):
 def kmeans_clustering(x_train, y_train):
     kmeans = KMeans(n_clusters=8, init='k-means++', random_state=0)
     f_kmeans = kmeans.fit_predict(x_train, y_train)
-
-    print("%s" % str(f_kmeans))
-    for i in range(len(x_train)):
-        if f_kmeans[i] == 0:
-            plt.scatter(x_train[0], x_train[1], s=20, c='red', label='Car')
-        elif f_kmeans[i] == 1:
-            plt.scatter(x_train[0], x_train[1], s=20, c='blue', label='Sedan')
-        elif f_kmeans[i] == 2:
-            plt.scatter(x_train[0], x_train[1], s=20, c='green', label='Hatchback')
-        elif f_kmeans[i] == 3:
-            plt.scatter(x_train[0], x_train[1], s=20, c='cyan', label='Bus')
-        elif f_kmeans[i] == 4:
-            plt.scatter(x_train[0], x_train[1], s=20, c='magenta', label='Truck')
-        elif f_kmeans[i] == 5:
-            plt.scatter(x_train[0], x_train[1], s=20, c='orange', label='Motocycle')
-        elif f_kmeans[i] == 6:
-            plt.scatter(x_train[0], x_train[1], s=20, c='purple', label='Jeep')
-        elif f_kmeans[i] == 7:
-            plt.scatter(x_train[0], x_train[1], s=20, c='brown', label='Pickup')
-
-    plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=50, c='yellow', label='Centroids')
-    plt.title('Clusters of vehicles')
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.legend()
-    plt.show()
+    
+    return f_kmeans
 
 
 def evaluate(labels, y_test):
