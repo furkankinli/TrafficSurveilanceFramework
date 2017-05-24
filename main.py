@@ -74,12 +74,12 @@ def main():
     print('Size of shifted data: %d' % len(shifted_data))
 
     print('Applying flipping manipulation...')
-    flipped_data, flipped_labels = data_manipulation.apply_vertical_flip(contrasted_data, labels)
+    flipped_data, flipped_labels = data_manipulation.apply_horizontal_flip(contrasted_data, labels)
     print('Size of shifted data: %d' % len(flipped_data))
 
     print('Concatenating manipulated data')
     concat_data = rotated_data + shifted_data + contrasted_data + flipped_data
-    # concat_data = data For 2.5k sized Original data.
+    # concat_data = data  data For 2.5k sized Original data.
 
     print("Reshaping images...")
     reshaped_concat_data = reshape_list(concat_data)
@@ -140,8 +140,8 @@ def main():
     print("Confusion matrix: %s \n\t" % str(cm_rfc))
     print("Running time: %s" % str(datetime.now() - start))
 
-    print("Applying K-Means Clustering...")
-    classifier.kmeans_clustering(x_train=X_train, y_train=y_train)
+    """print("Applying K-Means Clustering...")
+    classifier.kmeans_clustering(x_train=X_train, y_train=y_train)"""
 
 
 if __name__ == '__main__':
